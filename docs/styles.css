@@ -170,17 +170,20 @@ h3 {
   font-size: 0.98rem;
 }
 
-.hero-card {
+/* .hero-card {
   margin-top: 250px;
   width: 100%;
-  max-width: 950px;   /* increase width */
-  aspect-ratio: 16 / 9; /* PERFECT fit for map */
+  max-width: 950px;   
+  aspect-ratio: 16 / 9;
   border: 1px solid var(--line);
   border-radius: 28px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
   box-shadow: var(--shadow);
   overflow: hidden;
-}
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+} */
+
+
 
 .browser-bar {
   height: 46px;
@@ -207,7 +210,7 @@ h3 {
   background: var(--success);
 }
 
-.map-preview {
+/* .map-preview {
   position: relative;
   min-height: 390px;
   background:
@@ -217,7 +220,7 @@ h3 {
     radial-gradient(circle at 33% 66%, rgba(255, 77, 125, 0.20), transparent 10rem),
     #0d1728;
   background-size: 44px 44px, 44px 44px, auto, auto, auto;
-}
+} */
 
 .map-preview::before {
   content: "";
@@ -460,19 +463,13 @@ code {
   }
 }
 
-.map-preview {
-  width: 100%;
-  height: calc(100% - 46px); /* subtract browser bar */
-  overflow: hidden;
-}
-
-.map-image {
+/* .map-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 200%; /* pushes image DOWN */
+  object-position: center 60%; 
   display: block;
-}
+} */
 
 .reflection-grid {
   display: grid;
@@ -530,4 +527,90 @@ code {
   .phase-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* .hero-link {
+  display: block;
+  text-decoration: none;
+} */
+
+/* .hero-link:hover .hero-card {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+} */
+
+/* .map-preview {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 46px);
+  overflow: hidden;
+} */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7, 17, 31, 0.6);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(4px);
+}
+
+.overlay span {
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1px solid var(--line);
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-link:hover .overlay {
+  opacity: 1;
+}
+
+.hero-card {
+  margin-top: 250px;
+  width: 120%;
+  max-width: 1050px;
+  height: 350px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+}
+
+.hero-link {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  text-decoration: none;
+}
+
+.map-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
 }
