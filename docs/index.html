@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShowMeTheVillain – Project Presentation</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="eyebrow">CS 371 · Final Project</p>
+      <nav class="nav">
+        <a href="#intro">Intro</a>
+        <a href="#requirements">Requirements</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#frontend">Frontend</a>
+        <a href="#backend">Backend</a>
+        <a href="#pipeline">Data Pipeline</a>
+        <a href="#testing">Testing</a>
+        <a href="#contributions">Contributions</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="intro" class="hero section">
+      <div class="hero-copy">
+        <p class="kicker">Global Phishing Threat Tracker</p>
+        <h1>ShowMeTheVillain</h1>
+        <p class="lede">
+          A cybersecurity visualization platform that maps phishing activity around the world using a
+          Plotly density map, interactive filters, a FastAPI backend, and a Cloudflare-based static demo path.
+        </p>
+
+        <div class="meta-grid">
+          <div>
+            <span>Course</span>
+            <strong>CS 371<br>Final Project</strong>
+          </div>
+          <div>
+            <span>Focus</span>
+            <strong>Threat Intelligence Visualization</strong>
+          </div>
+          <div>
+            <span>Stack</span>
+            <strong>HTML · Plotly · FastAPI · Cloudflare</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="browser-bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="map-preview">
+          <img src="assets/live_site2.png" alt="Threat Map Screenshot" class="map-image">
+        </div>
+      </div>
+    </section>
+
+    <section id="requirements" class="section">
+      <h2>Functional Requirements & Goals</h2>
+      <div class="two-column">
+        <article class="card">
+          <h3>Functional Requirements</h3>
+          <ul>
+            <li>Display phishing incidents on a global density map.</li>
+            <li>Fetch map points from a backend API or static worker endpoint.</li>
+            <li>Filter visible threats by severity, target company, country, and ISP.</li>
+            <li>Show total loaded threats and currently visible matching threats.</li>
+            <li>Keep the presentation site separate from the live application.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Non-Functional Goals</h3>
+          <ul>
+            <li>Keep the frontend lightweight and deployable on GitHub Pages.</li>
+            <li>Separate presentation content from production code.</li>
+            <li>Use readable architecture diagrams and concise technical explanations.</li>
+            <li>Make the project easy to demo without requiring local setup.</li>
+            <li>Document design decisions, tradeoffs, and team responsibilities.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <h2>System Architecture Overview</h2>
+      <p class="section-intro">
+        ShowMeTheVillain uses a layered architecture: the browser renders the map, the backend prepares clean
+        phishing records, and the deployment layer supports both dynamic and static demo modes.
+      </p>
+
+      <div class="architecture">
+        <div class="arch-box">
+          <span>Presentation Layer</span>
+          <strong>Static Web UI</strong>
+          <p>Plotly map, toolbar filters, status text, and demo controls.</p>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">
+          <span>API Layer</span>
+          <strong>FastAPI / Worker</strong>
+          <p>Serves normalized map-point JSON to the browser.</p>
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">
+          <span>Data Layer</span>
+          <strong>PhishStats / D1</strong>
+          <p>External phishing data source plus cached or persisted records.</p>
+        </div>
+      </div>
+
+      <pre class="code-card"><code>Browser
+  ├─ loads static HTML/CSS/JS
+  ├─ requests map-point JSON
+  └─ filters incidents client-side
+
+FastAPI Backend
+  ├─ routes/phishing.py
+  ├─ services/phishing_service.py
+  ├─ services/cache_service.py
+  └─ api_client.py
+
+Cloudflare Path
+  ├─ Pages hosts static site
+  ├─ Worker serves demo/map JSON
+  └─ D1 stores phishing records</code></pre>
+    </section>
+
+    <section id="frontend" class="section">
+      <h2>Frontend: Interactive Map</h2>
+      <div class="feature-grid">
+        <article class="card">
+          <h3>Plotly Density Map</h3>
+          <p>
+            The main interface renders latitude/longitude threat points as a heat-style density map so
+            clusters of phishing activity are visible at a glance.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Top Filter Bar</h3>
+          <p>
+            Dropdown filters allow the user to narrow the map by threat level, impersonated company,
+            country, and ISP without making a new network request.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Status Feedback</h3>
+          <p>
+            The UI reports how many threats were loaded and how many match the current filter state,
+            making demos easier to explain.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="backend" class="section">
+      <h2>Backend: FastAPI Services</h2>
+      <div class="two-column">
+        <article class="card">
+          <h3>Route Layer</h3>
+          <p>
+            HTTP endpoints expose phishing records, map points, filtered data, statistics, refresh behavior,
+            and analytics summaries.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Service Layer</h3>
+          <p>
+            Service modules handle fetching, filtering, validation, caching, and analytics so route handlers
+            stay small and focused.
+          </p>
+        </article>
+      </div>
+
+      <div class="endpoint-list">
+        <span>GET /api/phishing/map-points</span>
+        <span>GET /api/phishing/heatmap</span>
+        <span>GET /api/phishing/stats</span>
+        <span>GET /api/analytics/overview</span>
+      </div>
+    </section>
+
+    <section id="pipeline" class="section">
+      <h2>Data Pipeline & Deployment</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span>1</span>
+          <div>
+            <h3>Collect</h3>
+            <p>Phishing data is pulled from the upstream source or served from the Cloudflare worker path.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span>2</span>
+          <div>
+            <h3>Normalize</h3>
+            <p>Records are converted into a consistent map-point format containing lat, lon, intensity, threat level, company, country, and ISP.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span>3</span>
+          <div>
+            <h3>Cache</h3>
+            <p>Caching reduces repeated external API calls and keeps demos responsive.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span>4</span>
+          <div>
+            <h3>Visualize</h3>
+            <p>The browser fetches one batch of rows and applies filters client-side for fast interaction.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testing" class="section">
+      <h2>Testing Strategy & Demo Checklist</h2>
+      <div class="two-column">
+        <article class="card">
+          <h3>Manual Test Cases</h3>
+          <ul>
+            <li>Load the page with the FastAPI backend running locally.</li>
+            <li>Load the page using worker/static demo data.</li>
+            <li>Verify each filter changes the visible threat count.</li>
+            <li>Confirm empty filter combinations show a clear empty state.</li>
+            <li>Check that deployment does not point to localhost.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Presentation Demo Flow</h3>
+          <ol>
+            <li>Start with the problem: phishing attacks are global and fast-moving.</li>
+            <li>Show the density map and explain each filter.</li>
+            <li>Walk through architecture and data flow.</li>
+            <li>Discuss caching and deployment tradeoffs.</li>
+            <li>End with what the team would improve next.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="contributions" class="section">
+      <h2>Team Contributions</h2>
+      <p class="section-intro">
+        Replace these placeholders with the actual names and responsibilities for your group.
+      </p>
+
+      <div class="contribution-grid">
+        <article class="card">
+          <h3>Bryon Cobb</h3>
+          <p>[ENTER HERE]</p>
+        </article>
+        <article class="card">
+          <h3>Tom Lovesee</h3>
+          <p>[ENTER HERE]</p>
+        </article>
+        <article class="card">
+          <h3>Ethan Christman</h3>
+          <p>[ENTER HERE]</p>
+        </article>
+        <article class="card">
+          <h3>Matthew Kabat</h3>
+          <p>[ENTER HERE]</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="member-reflections" class="section">
+  <h2>Member Reflections</h2>
+  <p class="section-intro">
+    Each team member reflected on what they found interesting, what was challenging, and what they worked on during both phases of the project.
+  </p>
+
+  <div class="reflection-grid">
+    <article class="reflection-card">
+      <h3>Bryon Cobb</h3>
+
+      <div class="reflection-block">
+        <span>What I found interesting</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="reflection-block">
+        <span>What I found hard</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="phase-grid">
+        <div class="reflection-block">
+          <span>Phase 1 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+        <div class="reflection-block">
+          <span>Phase 2 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="reflection-card">
+      <h3>Tom Lovesee</h3>
+
+      <div class="reflection-block">
+        <span>What I found interesting</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="reflection-block">
+        <span>What I found hard</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="phase-grid">
+        <div class="reflection-block">
+          <span>Phase 1 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+        <div class="reflection-block">
+          <span>Phase 2 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="reflection-card">
+      <h3>Ethan Christman</h3>
+
+      <div class="reflection-block">
+        <span>What I found interesting</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="reflection-block">
+        <span>What I found hard</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="phase-grid">
+        <div class="reflection-block">
+          <span>Phase 1 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+        <div class="reflection-block">
+          <span>Phase 2 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="reflection-card">
+      <h3>Matthew Kabat</h3>
+
+      <div class="reflection-block">
+        <span>What I found interesting</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="reflection-block">
+        <span>What I found hard</span>
+        <p>[ENTER HERE]</p>
+      </div>
+
+      <div class="phase-grid">
+        <div class="reflection-block">
+          <span>Phase 1 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+        <div class="reflection-block">
+          <span>Phase 2 Work</span>
+          <p>[ENTER HERE]</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+    <p>ShowMeTheVillain · Project Presentation</p>
+    <a href="https://github.com/Bryons-factory/ShowMeTheVillain">View Source on GitHub</a>
+  </footer>
+</body>
+</html>
