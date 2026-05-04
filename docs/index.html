@@ -15,6 +15,7 @@
         <a href="#phases">Phases</a>
         <a href="#contributions">Contributions</a>
         <a href="#reflections">Reflections</a>
+        <a href="#challenges">Major Challenges</a>
         <!-- <a href="#requirements">Requirements</a> -->
         <a href="#architecture">Architecture</a>
         <!-- <a href="#frontend">Frontend</a>
@@ -245,6 +246,43 @@
               <p>Sorting of dataclass information and converting that into json objects for front end rendering</p>
             </div>
           </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="challenges" class="section">
+      <h2>Major Challenges</h2>
+      <p class="section-intro">
+        Throughout the project, the team had to solve several technical and organizational challenges while moving
+        from the original concept into a deployed phishing threat visualization platform.
+      </p>
+
+      <div class="feature-grid">
+        <article class="card">
+          <h3>Integrating a Serverless Architecture</h3>
+          <ul>
+            <li>Designed the project around Cloudflare Pages, Workers, and D1 instead of a traditional always-running server.</li>
+            <li>Balanced the FastAPI backend approach with Cloudflare's serverless deployment path for the final demo.</li>
+            <li>Had to think carefully about where data should be fetched, stored, cached, and served to the frontend.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Learning New Technologies</h3>
+          <ul>
+            <li>Learned how Cloudflare hosting, Workers, D1, GitHub, and static website deployment fit together.</li>
+            <li>Adjusted to new tooling, permissions, repository workflows, and deployment steps while building the application.</li>
+            <li>Connected multiple parts of the stack so the site, backend, database, and source control worked as one system.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Refactoring Code for Automation</h3>
+          <ul>
+            <li>Broke larger functions and methods into smaller classes and service-style components.</li>
+            <li>Separated responsibilities so API handling, caching, data conversion, and frontend delivery were easier to test and maintain.</li>
+            <li>Converted recurring data-refresh behavior into CRON-style automation through Cloudflare Workers.</li>
+          </ul>
         </article>
       </div>
     </section>
