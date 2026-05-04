@@ -12,6 +12,7 @@
       <p class="eyebrow">CS 371 · Final Project</p>
       <nav class="nav">
         <a href="#intro">Intro</a>
+        <a href="#phases">Phases</a>
         <a href="#contributions">Contributions</a>
         <a href="#reflections">Reflections</a>
         <!-- <a href="#requirements">Requirements</a> -->
@@ -19,7 +20,7 @@
         <!-- <a href="#frontend">Frontend</a>
         <a href="#backend">Backend</a> -->
         <a href="#pipeline">Data Pipeline</a>
-        <a href="#testing">Testing</a>
+        <!-- <a href="#testing">Testing</a> -->
       </nav>
     </div>
   </header>
@@ -66,6 +67,41 @@
       </div>
     </section>
 
+    <section id="phases" class="section">
+      <h2>Project Phases</h2>
+      <p class="section-intro">
+        The project evolved from an early data-source pivot into a shipped map and API stack documented in the
+        <a href="https://github.com/Bryons-factory/ShowMeTheVillain" target="_blank" rel="noopener noreferrer">ShowMeTheVillain</a>
+        repository: a Plotly map, FastAPI services, and Cloudflare Pages / Worker deployment.
+      </p>
+
+      <div class="feature-grid">
+        <article class="card">
+          <h3>Planning</h3>
+          <ul>
+            <li>Originally selected an API oriented toward insider-trading signals that could not support the project goals.</li>
+            <li>Transitioned the product direction to <strong>PhishStats</strong> as the phishing threat data source.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Phase 1 (Alpha)</h3>
+          <ul>
+            <li>Designed the Cloudflare <strong>D1</strong> database and table schema.</li>
+            <li>Built an API handler using PhishStats to ingest data into D1.</li>
+            <li>Created an initial <strong>Plotly</strong> heatmap visualization.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Phase 2 (Final Project)</h3>
+          <ul>
+            <li>Fixed bugs uncovered during integration and demo prep.</li>
+            <li>Implemented real <strong>backend → frontend</strong> pipelines (e.g. map-point JSON from FastAPI to the browser).</li>
+            <li>Published the live site at <a href="https://showmethevillian.pages.dev/" target="_blank" rel="noopener noreferrer">showmethevillian.pages.dev</a>.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
     <section id="contributions" class="section">
       <h2>Team Contributions</h2>
       <p class="section-intro">
@@ -107,7 +143,7 @@
     <section id="reflections" class="section">
       <h2>Member Reflections</h2>
       <p class="section-intro">
-        Each team member reflected on what they found interesting, what was challenging, and what they worked on during both phases of the project.
+        Each team member reflected on what they found interesting, what was challenging, and what they worked on across planning, Phase 1 (Alpha), and Phase 2 (Final Project).
       </p>
 
       <div class="reflection-grid">
@@ -371,7 +407,7 @@ Cloudflare Path
       </div>
     </section>
 
-    <section id="testing" class="section">
+    <!-- <section id="testing" class="section">
       <h2>Testing Strategy & Demo Checklist</h2>
       <div class="two-column">
         <article class="card">
@@ -395,7 +431,7 @@ Cloudflare Path
           </ol>
         </article>
       </div>
-    </section>
+    </section> -->
 
   </main>
 
